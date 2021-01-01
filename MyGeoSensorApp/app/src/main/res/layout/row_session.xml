@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rowCashMovement"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_gravity="center"
+    android:background="#ffffff">
+
+    <TextView android:id="@+id/tMoney"
+        android:layout_height="wrap_content"
+
+        android:text="100€"
+        android:textSize="22sp"
+        android:layout_width="wrap_content"
+        android:layout_weight="0.25"/>
+    <TextView android:id="@+id/tDate"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="aaaaaaaaa"
+        android:layout_width="wrap_content"
+        android:layout_weight="0.3"/>
+
+    <TextView android:id="@+id/tConcept"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="aaaaaaaaa"
+        android:layout_width="wrap_content"
+        android:layout_weight="0.4"/>
+
+    <ImageView
+        android:id="@+id/iPay"
+        android:layout_width="95dp"
+        android:layout_height="37dp"
+        android:layout_weight="0.15"
+        android:padding="2dp"
+        android:src="@drawable/pay" />
+
+</LinearLayout>
