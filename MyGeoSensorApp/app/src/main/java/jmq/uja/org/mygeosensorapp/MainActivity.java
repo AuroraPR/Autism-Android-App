@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 if (menuItem.getItemId()==R.id.menu_task&&prevSelected!=R.id.menu_task){
+                    Fragment actualFragment=new TasksFragment();
+                    showSelectedFragment(actualFragment);
                     prevSelected=R.id.menu_task;
                 }
                 if (menuItem.getItemId()==R.id.menu_rewards&&prevSelected!=R.id.menu_rewards){
@@ -64,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         //if(prevSelected==R.id.menu_rewards) {
             CashFragment fragInfo = new CashFragment();
             fragInfo.resolveIntent(intent);
-            //R.color.bnv_tab_item_foreground.
-            bn.setSelectedItemId(R.id.menu_rewards);
+            prevSelected=R.id.menu_rewards;
+            bn.setSelectedItemId(prevSelected);
             showSelectedFragment(fragInfo);
         //}
     }

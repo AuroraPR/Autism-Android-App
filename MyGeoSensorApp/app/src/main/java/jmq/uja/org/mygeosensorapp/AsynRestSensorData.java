@@ -1,5 +1,6 @@
 package jmq.uja.org.mygeosensorapp;
 
+import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -46,12 +48,26 @@ public class AsynRestSensorData {
                 @Path("money") float money,
                 @Path("concept") String concept
         );
+
+        @GET("get_task/{user}/{currentTime}")
+        public Call<Task []> getTask(
+                @Path("user") String user,
+                @Path("currentTime") Long currentTime
+        );
+
+        @GET("insert_task/{user}/{name}/{date}")
+        public Call<Task []> insertTask(
+                @Path("user") String user,
+                @Path("name") String name,
+                @Path("date") Date date
+        );
+
+
     }
 
 
 
     static ServiceSensorData service0=null;
-    //ESTA ES LA IP DE MI PORTATIL, CAMBIARLA!
     static public ServiceSensorData init(){
       //  if(service0==null) {
             Retrofit retrofit = new Retrofit.Builder()
