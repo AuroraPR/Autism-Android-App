@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,7 +58,6 @@ public class GeoFragment extends Fragment implements LocationListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_geo, container, false);
-
         Context ctx = getActivity().getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
@@ -66,7 +66,6 @@ public class GeoFragment extends Fragment implements LocationListener {
 
         tv=(TextView) root.findViewById(R.id.userName);
         tv.setText("Ejemplo de vista con mapa!");
-
         initGPS();
 
         // get map controller
@@ -361,6 +360,7 @@ public class GeoFragment extends Fragment implements LocationListener {
         getLocation();
     }
 
+
     @Override
     public void onProviderDisabled(String s) {
         if (locationManager != null) {
@@ -370,40 +370,42 @@ public class GeoFragment extends Fragment implements LocationListener {
 
     Marker currentLocation=null;
     private void updateUI(Location loc) {
-        Log.d("MyGeo", "updateUI");
+        if(this.isVisible()) {
+            Log.d("MyGeo", "updateUI");
 
 
-        this.tv.setText("["+loc.getLatitude()+","+loc.getLongitude()+"] ");
+            this.tv.setText("[" + loc.getLatitude() + "," + loc.getLongitude() + "] ");
 
-        if(currentLocation!=null)
-            this.map.getOverlays().remove(currentLocation);
-        currentLocation = new Marker(map);
-        currentLocation.setTitle("Aurora");
-        currentLocation.setPosition(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
-        currentLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-
-
-        Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ap, null);
-        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
-        currentLocation.setIcon(d);
+            if (currentLocation != null)
+                this.map.getOverlays().remove(currentLocation);
+            currentLocation = new Marker(map);
+            currentLocation.setTitle("Aurora");
+            currentLocation.setPosition(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
+            currentLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
 
-        map.getOverlays().add(currentLocation);
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ap, null);
+            Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+            Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
+            currentLocation.setIcon(d);
 
-        map.getController().animateTo(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
-        map.getController().setZoom(18d);
-        //getLocation();
+
+            map.getOverlays().add(currentLocation);
+
+            map.getController().animateTo(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
+            map.getController().setZoom(18d);
+            //getLocation();
 
 
-        Call<TimeLocation []> call = AsynRestSensorData.init().inserTimeLocation("aurora",(float)loc.getLatitude(),(float)loc.getLongitude());
-        AsynRestSensorData.MyCall<TimeLocation[]> mycall=new AsynRestSensorData.MyCall<TimeLocation[]>(
-                (TimeLocation [] e)->{
-                    Log.d("MyGeo", "all tracks..."+e.length);
-                    paintTrack(e);
-                }
-        );
-        mycall.execute(call);
+            Call<TimeLocation[]> call = AsynRestSensorData.init().inserTimeLocation("aurora", (float) loc.getLatitude(), (float) loc.getLongitude());
+            AsynRestSensorData.MyCall<TimeLocation[]> mycall = new AsynRestSensorData.MyCall<TimeLocation[]>(
+                    (TimeLocation[] e) -> {
+                        Log.d("MyGeo", "all tracks..." + e.length);
+                        paintTrack(e);
+                    }
+            );
+            mycall.execute(call);
+        }
 
     }
 
@@ -420,4 +422,5 @@ public class GeoFragment extends Fragment implements LocationListener {
             map.getOverlays().add(startMarker);
         }
     }
+
 }

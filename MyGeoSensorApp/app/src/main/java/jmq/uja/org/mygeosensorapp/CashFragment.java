@@ -17,13 +17,11 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,38 +32,52 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 
-public class CashActivity extends FragmentActivity {
+
+public class CashFragment extends Fragment {
+
     private NfcAdapter mNfcAdapter;
     ListView listView;
     List<CashMovement> data;
     CashMovementsAdapter adapter;
     TextView tCash;
+    Intent onNewIntent;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_main);
-        tCash = (TextView) findViewById(R.id.tCash);
-        listView = (ListView) findViewById(R.id.sMovimientos);
-        data=new LinkedList<CashMovement>();
-        listView.setAdapter(adapter=new CashMovementsAdapter(this,data));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_cash, container, false);
+        Bundle args=this.getArguments();
+        if(args!=null)
+            onNewIntent=args.getParcelable("onNewIntent");
+
+        tCash = (TextView) root.findViewById(R.id.tCash);
+        listView = (ListView) root.findViewById(R.id.sMovimientos);
+        data = new LinkedList<CashMovement>();
+        listView.setAdapter(adapter = new CashMovementsAdapter(root.getContext(), data));
 
 
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        //mNfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
 
-        Call<CashMovement []> call = AsynRestSensorData.init().getCashMovement("aurora");
-        AsynRestSensorData.MyCall<CashMovement[]> mycall=new AsynRestSensorData.MyCall<CashMovement[]>(
-                (CashMovement [] e)->{
+        Call<CashMovement[]> call = AsynRestSensorData.init().getCashMovement("aurora");
+        AsynRestSensorData.MyCall<CashMovement[]> mycall = new AsynRestSensorData.MyCall<CashMovement[]>(
+                (CashMovement[] e) -> {
                     paintCashMovements(e);
                 }
         );
         mycall.execute(call);
-    }
 
+        return root;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void paintCashMovements(CashMovement [] e){
@@ -103,34 +115,11 @@ public class CashActivity extends FragmentActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        IntentFilter techDetected = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-        IntentFilter[] nfcIntentFilter = new IntentFilter[]{techDetected, tagDetected, ndefDetected};
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        if (mNfcAdapter != null)
-            mNfcAdapter.enableForegroundDispatch(this, pendingIntent, nfcIntentFilter, null);
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mNfcAdapter != null)
-            mNfcAdapter.disableForegroundDispatch(this);
-    }
-
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+    public void resolveIntent(Intent onNewIntent){
+        Tag tag = onNewIntent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         patchTag(tag);
         if (tag != null) {
-            readFromNFC(tag, intent);
+            readFromNFC(tag, onNewIntent);
         }
     }
 
@@ -201,6 +190,7 @@ public class CashActivity extends FragmentActivity {
         return nTag;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void readFromNFC(Tag tag, Intent intent) {
 
         try {
@@ -234,7 +224,7 @@ public class CashActivity extends FragmentActivity {
                     }
 
                 } else {
-                    Toast.makeText(this, "Not able to read from NFC, Please try again...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Not able to read from NFC, Please try again...", Toast.LENGTH_LONG).show();
 
                 }
             } else {
@@ -250,14 +240,14 @@ public class CashActivity extends FragmentActivity {
 
                             ndef.close();
                         } else {
-                            Toast.makeText(this, "Not able to read from NFC, Please try again...", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Not able to read from NFC, Please try again...", Toast.LENGTH_LONG).show();
 
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(this, "NFC is not readable", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "NFC is not readable", Toast.LENGTH_LONG).show();
                 }
             }
         } catch (Exception e) {

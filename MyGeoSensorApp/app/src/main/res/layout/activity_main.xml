@@ -9,7 +9,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="70dp">
+        android:layout_marginBottom="55dp">
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
@@ -19,8 +19,8 @@
         android:layout_gravity="bottom"
         android:background="@color/colorPrimaryDark"
         app:itemBackground="@color/colorPrimaryDark"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
+        app:itemIconTint="@color/bnv_tab_item_foreground"
+        app:itemTextColor="@color/bnv_tab_item_foreground"
         app:menu="@menu/main_menu">
 
     </android.support.design.widget.BottomNavigationView>
