@@ -1,5 +1,6 @@
 package jmq.uja.org.mygeosensorapp.old;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,12 +17,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ import jmq.uja.org.mygeosensorapp.R;
 import jmq.uja.org.mygeosensorapp.data.Utils;
 import retrofit2.Call;
 
-public class CashActivity extends FragmentActivity {
+public class CashActivity extends Activity {
     private NfcAdapter mNfcAdapter;
     ListView listView;
     List<CashMovement> data;
@@ -200,6 +201,7 @@ public class CashActivity extends FragmentActivity {
         return nTag;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void readFromNFC(Tag tag, Intent intent) {
 
         try {

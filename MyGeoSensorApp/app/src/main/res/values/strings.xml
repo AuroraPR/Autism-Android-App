@@ -13,4 +13,11 @@
     <string name="show">Nº tareas restantes</string>
     <string name="deselect_all">Deselect All</string>
     <string name="add_task">Añadir nueva tarea</string>
+
+    <string name="firstname">First Name (*)</string>
+    <string name="mandatory">This field is mandatory</string>
+    <string name="lastname">Last Name</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

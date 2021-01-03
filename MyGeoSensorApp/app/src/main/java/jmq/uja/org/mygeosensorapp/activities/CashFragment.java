@@ -14,8 +14,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +21,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -118,6 +119,7 @@ public class CashFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void resolveIntent(Intent onNewIntent){
         Tag tag = onNewIntent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         patchTag(tag);

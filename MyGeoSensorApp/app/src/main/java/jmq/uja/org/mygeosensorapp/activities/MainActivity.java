@@ -6,21 +6,26 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import jmq.uja.org.mygeosensorapp.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FormDialogListener{
     BottomNavigationView bn;
     int prevSelected=0;
     private NfcAdapter mNfcAdapter;
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
     String phoneNo = "657019300";
     String message = "PROBANDO DESDE LA APP";
+
+    private TextView textViewFirstName;
+    private TextView textViewLastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -37,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         bn=(BottomNavigationView) findViewById(R.id.bottomNavigation);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         showSelectedFragment(new TasksFragment());
+
+        textViewFirstName = new TextView(this);
+        textViewLastName = new TextView(this);
 
         bn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -77,14 +88,16 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onNewIntent(Intent intent) {
         //if(prevSelected==R.id.menu_rewards) {
-            CashFragment fragInfo = new CashFragment();
-            fragInfo.resolveIntent(intent);
-            prevSelected=R.id.menu_rewards;
-            bn.setSelectedItemId(prevSelected);
-            showSelectedFragment(fragInfo);
+        super.onNewIntent(intent);
+        CashFragment fragInfo = new CashFragment();
+        fragInfo.resolveIntent(intent);
+        prevSelected = R.id.menu_rewards;
+        bn.setSelectedItemId(prevSelected);
+        showSelectedFragment(fragInfo);
         //}
     }
 
@@ -142,5 +155,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void update(String firstname, String lastname) {
+        textViewFirstName.setText(firstname);
+        textViewLastName.setText(lastname);
+    }
 }

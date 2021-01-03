@@ -2,15 +2,17 @@ package jmq.uja.org.mygeosensorapp.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class TasksFragment extends Fragment {
     private Button selectButton;
     private Locale locale=new Locale("es", "ES");
     private DateFormat df=DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+
 
     public TasksFragment() {
     }
@@ -80,10 +83,14 @@ public class TasksFragment extends Fragment {
         view.findViewById(R.id.show_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SparseBooleanArray selectedRows = adapter.getSelectedIds();//Get the selected ids from adapter
+                SparseBooleanArray selectedRows;
                 //Check if item is selected or not via size
                 StringBuilder stringBuilder = new StringBuilder();
-                int remainingTasks= arrayList.size()-selectedRows.size();
+                int remainingTasks=0;
+                if(arrayList!=null) {
+                    selectedRows = adapter.getSelectedIds();//Get the selected ids from adapter
+                    remainingTasks = arrayList.size() - selectedRows.size();
+                }
                 Toast.makeText(context, "Tareas restantes: " + remainingTasks, Toast.LENGTH_SHORT).show();
 
             }
@@ -95,7 +102,8 @@ public class TasksFragment extends Fragment {
 
                 //Check the current text of Select Button
                 if (selectButton.getText().toString().equals(getResources().getString(R.string.add_task))) {
-
+                    FormDialogFragment form = FormDialogFragment.newInstance("trololo", "trololo");
+                    form.show(getActivity().getSupportFragmentManager(), FormDialogFragment.TAG);
 
                 }
 
@@ -103,4 +111,5 @@ public class TasksFragment extends Fragment {
             }
         });
     }
+
 }
