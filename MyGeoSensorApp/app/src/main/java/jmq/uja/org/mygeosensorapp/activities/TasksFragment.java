@@ -33,9 +33,12 @@ public class TasksFragment extends Fragment {
     private Button selectButton;
     private Locale locale=new Locale("es", "ES");
     private DateFormat df=DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+    private TextView newTaskName;
+    private TextView newTaskDate;
 
-
-    public TasksFragment() {
+    public TasksFragment(TextView newTaskName, TextView newTaskDate) {
+        this.newTaskName = newTaskName;
+        this.newTaskDate = newTaskDate;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         selectButton = (Button) view.findViewById(R.id.select_button);
+
         Call<Task[]> call=null;
         call = AsynRestSensorData.init().getTask("aurora", System.currentTimeMillis());
         AsynRestSensorData.MyCall<Task[]> tasks=new AsynRestSensorData.MyCall<Task[]>(
@@ -102,7 +106,8 @@ public class TasksFragment extends Fragment {
 
                 //Check the current text of Select Button
                 if (selectButton.getText().toString().equals(getResources().getString(R.string.add_task))) {
-                    FormDialogFragment form = FormDialogFragment.newInstance("trololo", "trololo");
+                    FormDialogFragment form = FormDialogFragment.newInstance(newTaskName.getText().toString(),
+                            newTaskDate.getText().toString());
                     form.show(getActivity().getSupportFragmentManager(), FormDialogFragment.TAG);
 
                 }
@@ -111,5 +116,7 @@ public class TasksFragment extends Fragment {
             }
         });
     }
+
+
 
 }

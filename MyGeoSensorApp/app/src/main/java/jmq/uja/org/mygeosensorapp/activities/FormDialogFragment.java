@@ -1,6 +1,9 @@
 package jmq.uja.org.mygeosensorapp.activities;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,7 +14,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
+
 import jmq.uja.org.mygeosensorapp.R;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -20,6 +26,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class FormDialogFragment extends AppCompatDialogFragment {
@@ -31,8 +41,13 @@ public class FormDialogFragment extends AppCompatDialogFragment {
 
   private TextInputLayout textInputLayoutFirstName;
   private EditText textInputFirstName;
-  private EditText textInputLastName;
   private FormDialogListener listener;
+
+  private SimpleDateFormat mSimpleDateFormat;
+  private Calendar mCalendar;
+  private Activity mActivity;
+  private Button mDate;
+
 
   public static FormDialogFragment newInstance(String firstName, String lastName) {
     Bundle args = new Bundle();
@@ -59,6 +74,12 @@ public class FormDialogFragment extends AppCompatDialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     View content = LayoutInflater.from(getContext()).inflate(R.layout.fragment_form, null);
+
+    mActivity = getActivity();
+    mSimpleDateFormat = new SimpleDateFormat("MM/dd/yyyy h:mm a", Locale.getDefault());
+    mDate = (Button) content.findViewById(R.id.textInputLastName);
+    mDate.setText("Selecciona la fecha");
+    mDate.setOnClickListener(textListener);
 
     setupContent(content);
 
@@ -101,19 +122,19 @@ public class FormDialogFragment extends AppCompatDialogFragment {
 
   private void returnValues() {
     listener.update(textInputFirstName.getText().toString(),
-            textInputLastName.getText().toString());
+            mDate.getText().toString());
   }
 
   private void setupContent(View content) {
     textInputLayoutFirstName = content.findViewById(R.id.textInputLayoutFirstName);
     textInputFirstName = content.findViewById(R.id.textInputFirstName);
-    textInputLastName = content.findViewById(R.id.textInputLastName);
+    mDate = content.findViewById(R.id.textInputLastName);
     textInputFirstName.setText(getArguments().getString(ARG_FIRSTNAME));
     textInputFirstName.setSelection(getArguments().getString(ARG_FIRSTNAME).length());
-    textInputLastName.setText(getArguments().getString(ARG_LASTNAME));
-    textInputLastName.setSelection(getArguments().getString(ARG_LASTNAME).length());
+    mDate.setText(getArguments().getString(ARG_LASTNAME));
+    //textInputLastName.setSelection(getArguments().getString(ARG_LASTNAME).length());
 
-    textInputLastName.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+    mDate.setOnEditorActionListener((textView, actionId, keyEvent) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         returnValues();
         dismiss();
@@ -141,5 +162,39 @@ public class FormDialogFragment extends AppCompatDialogFragment {
       }
     });
   }
+
+
+
+
+  /* Define the onClickListener, and start the DatePickerDialog with users current time */
+  private final View.OnClickListener textListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      mCalendar = Calendar.getInstance();
+      new DatePickerDialog(mActivity, mDateDataSet, mCalendar.get(Calendar.YEAR),
+              mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+  };
+
+  /* After user decided on a date, store those in our calendar variable and then start the TimePickerDialog immediately */
+  private final DatePickerDialog.OnDateSetListener mDateDataSet = new DatePickerDialog.OnDateSetListener() {
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+      mCalendar.set(Calendar.YEAR, year);
+      mCalendar.set(Calendar.MONTH, monthOfYear);
+      mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+      new TimePickerDialog(mActivity, mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false).show();
+    }
+  };
+
+  /* After user decided on a time, save them into our calendar instance, and now parse what our calendar has into the TextView */
+  private final TimePickerDialog.OnTimeSetListener mTimeDataSet = new TimePickerDialog.OnTimeSetListener() {
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+      mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+      mCalendar.set(Calendar.MINUTE, minute);
+      mDate.setText(mSimpleDateFormat.format(mCalendar.getTime()));
+    }
+  };
 
 }

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
     String phoneNo = "657019300";
     String message = "PROBANDO DESDE LA APP";
 
-    private TextView textViewFirstName;
-    private TextView textViewLastName;
+    private TextView newTaskName;
+    private Button newTaskDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -44,17 +45,18 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
 
         bn=(BottomNavigationView) findViewById(R.id.bottomNavigation);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        showSelectedFragment(new TasksFragment());
 
-        textViewFirstName = new TextView(this);
-        textViewLastName = new TextView(this);
+        newTaskName = new TextView(this);
+        newTaskDate = new Button(this);
+
+        showSelectedFragment(new TasksFragment(newTaskName, newTaskDate));
 
         bn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 if (menuItem.getItemId()==R.id.menu_task&&prevSelected!=R.id.menu_task){
-                    Fragment actualFragment=new TasksFragment();
+                    Fragment actualFragment=new TasksFragment(newTaskName, newTaskDate);
                     showSelectedFragment(actualFragment);
                     prevSelected=R.id.menu_task;
                 }
@@ -154,10 +156,10 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
 
     }
 
-
     @Override
     public void update(String firstname, String lastname) {
-        textViewFirstName.setText(firstname);
-        textViewLastName.setText(lastname);
+        newTaskName.setText(firstname);
+        System.out.println(newTaskName.getText().toString());
+        newTaskDate.setText(lastname);
     }
 }

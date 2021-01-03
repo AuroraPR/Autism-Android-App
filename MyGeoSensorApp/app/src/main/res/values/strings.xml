@@ -14,10 +14,11 @@
     <string name="deselect_all">Deselect All</string>
     <string name="add_task">Añadir nueva tarea</string>
 
-    <string name="firstname">First Name (*)</string>
-    <string name="mandatory">This field is mandatory</string>
-    <string name="lastname">Last Name</string>
-    <string name="edit">Edit</string>
-    <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
+    <string name="task_name">Nombre de la tarea</string>
+    <string name="mandatory">Este campo es obligatorio</string>
+    <string name="task_date">Fecha</string>
+    <string name="edit">Nueva tarea</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_date">Selecciona la fecha</string>
 </resources>
