@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.data;
 
 import android.view.View;
 import android.view.ViewGroup;

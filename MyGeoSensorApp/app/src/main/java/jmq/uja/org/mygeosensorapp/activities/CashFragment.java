@@ -1,8 +1,6 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.activities;
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -33,6 +31,11 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
+import jmq.uja.org.mygeosensorapp.data.CashMovement;
+import jmq.uja.org.mygeosensorapp.data.Utils;
+import jmq.uja.org.mygeosensorapp.views.CashMovementsAdapter;
 import retrofit2.Call;
 
 
@@ -85,7 +88,7 @@ public class CashFragment extends Fragment {
         float total=0f;
         for(CashMovement cm:e)
             total+=cm.money;
-        tCash.setText(Utils.round(total,2)+"€");
+        tCash.setText(Utils.round(total,2)+" puntos");
 
 
 

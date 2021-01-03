@@ -1,6 +1,5 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.data;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class Task {
@@ -13,7 +12,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "SensorData{" + "user=" + user + ", name=" + name + ", date=" + date + '}';
+        return "Task{" + "user=" + user + ", name=" + name + ", date=" + date + '}';
     }
 
     @Override

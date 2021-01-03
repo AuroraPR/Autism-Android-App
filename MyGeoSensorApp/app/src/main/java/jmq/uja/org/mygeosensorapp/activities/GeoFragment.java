@@ -1,7 +1,7 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.activities;
+
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -17,11 +17,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+
+import android.support.v4.app.Fragment;
+
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
@@ -34,46 +39,53 @@ import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
 
+import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
+import jmq.uja.org.mygeosensorapp.data.ResourceLocation;
+import jmq.uja.org.mygeosensorapp.data.TimeLocation;
 import retrofit2.Call;
 
-public class GeoActivity extends Activity implements LocationListener {
+
+public class GeoFragment extends Fragment implements LocationListener {
 
     MapView map = null;
     TextView tv =null;
 
-    @Override public void onCreate(Bundle savedInstanceState) {
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        Context ctx = getApplicationContext();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_geo, container, false);
+        Context ctx = getActivity().getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
-        setContentView(R.layout.activity_geo);
-
-        map = (MapView) findViewById(R.id.map);
+        map = (MapView) root.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
-        tv=(TextView) findViewById(R.id.userName);
+        tv=(TextView) root.findViewById(R.id.userName);
         tv.setText("Ejemplo de vista con mapa!");
-
         initGPS();
 
         // get map controller
 
- //       addCenterMarker();
-        Call<ResourceLocation []> call = AsynRestSensorData.init().getResourceLocation("aurora");
+        //       addCenterMarker();
+        Call<ResourceLocation[]> call = AsynRestSensorData.init().getResourceLocation("aurora");
         AsynRestSensorData.MyCall<ResourceLocation[]> mycall=new AsynRestSensorData.MyCall<ResourceLocation[]>(
                 (ResourceLocation [] e)->{
                     paintSensorProperty(e);
                 }
         );
         mycall.execute(call);
-
+        return root;
     }
 
-
     private void initGPS(){
-        locationManager = (LocationManager) getSystemService(Service.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Service.LOCATION_SERVICE);
         isGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         isNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
@@ -84,7 +96,7 @@ public class GeoActivity extends Activity implements LocationListener {
         if (!isGPS && !isNetwork) {
             Log.d("MyGeo", "Connection off");
             showSettingsAlert();
-        //    getLastLocation();
+            //    getLastLocation();
         } else {
             Log.d("MyGeo", "Connection on");
             // check permissions
@@ -102,7 +114,7 @@ public class GeoActivity extends Activity implements LocationListener {
         }
     }
     public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle("GPS is not Enabled!");
         alertDialog.setMessage("Do you want to turn on GPS?");
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -158,7 +170,7 @@ public class GeoActivity extends Activity implements LocationListener {
     private boolean hasPermission(String permission) {
         if (canAskPermission()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
+                return (getActivity().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
             }
         }
         return true;
@@ -184,15 +196,15 @@ public class GeoActivity extends Activity implements LocationListener {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
                             showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(permissionsRejected.toArray(
-                                                new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                    }
-                                }
-                            });
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions(permissionsRejected.toArray(
+                                                        new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                            }
+                                        }
+                                    });
                             return;
                         }
                     }
@@ -251,7 +263,7 @@ public class GeoActivity extends Activity implements LocationListener {
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(GeoActivity.this)
+        new AlertDialog.Builder(getActivity())
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
@@ -259,7 +271,7 @@ public class GeoActivity extends Activity implements LocationListener {
                 .show();
     }
 
-    GeoActivity getMe(){
+    GeoFragment getMe(){
         return this;
     }
 
@@ -278,9 +290,9 @@ public class GeoActivity extends Activity implements LocationListener {
         }
 
 
-       if(properties.length>0){
-           zoomToBounds(computeArea(properties));
-       }
+        if(properties.length>0){
+            zoomToBounds(computeArea(properties));
+        }
     }
 
     public void zoomToBounds(final BoundingBox box) {
@@ -296,7 +308,7 @@ public class GeoActivity extends Activity implements LocationListener {
                     map.zoomToBoundingBox(box, true);
                     ViewTreeObserver vto2 = map.getViewTreeObserver();
 
-                        vto2.removeOnGlobalLayoutListener(this);
+                    vto2.removeOnGlobalLayoutListener(this);
 
                 }
             });
@@ -333,23 +345,6 @@ public class GeoActivity extends Activity implements LocationListener {
         return new BoundingBox(nord, est, sud, ovest);
 
     }
-    public void onResume(){
-        super.onResume();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
-        map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
-    }
-
-    public void onPause(){
-        super.onPause();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
-        map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
-    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -368,6 +363,7 @@ public class GeoActivity extends Activity implements LocationListener {
         getLocation();
     }
 
+
     @Override
     public void onProviderDisabled(String s) {
         if (locationManager != null) {
@@ -377,40 +373,42 @@ public class GeoActivity extends Activity implements LocationListener {
 
     Marker currentLocation=null;
     private void updateUI(Location loc) {
-        Log.d("MyGeo", "updateUI");
+        if(this.isVisible()) {
+            Log.d("MyGeo", "updateUI");
 
 
-            this.tv.setText("["+loc.getLatitude()+","+loc.getLongitude()+"] ");
+            this.tv.setText("[" + loc.getLatitude() + "," + loc.getLongitude() + "] ");
 
-                if(currentLocation!=null)
-                    this.map.getOverlays().remove(currentLocation);
-                currentLocation = new Marker(map);
-                currentLocation.setTitle("Aurora");
-                currentLocation.setPosition(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
-                currentLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-
-
-                Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ap, null);
-                Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-                Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
-                currentLocation.setIcon(d);
+            if (currentLocation != null)
+                this.map.getOverlays().remove(currentLocation);
+            currentLocation = new Marker(map);
+            currentLocation.setTitle("Aurora");
+            currentLocation.setPosition(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
+            currentLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
 
-                map.getOverlays().add(currentLocation);
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ap, null);
+            Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+            Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
+            currentLocation.setIcon(d);
 
-                map.getController().animateTo(new GeoPoint(loc.getLatitude(),loc.getLongitude()));
-                map.getController().setZoom(18d);
-                //getLocation();
+
+            map.getOverlays().add(currentLocation);
+
+            map.getController().animateTo(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
+            map.getController().setZoom(18d);
+            //getLocation();
 
 
-        Call<TimeLocation []> call = AsynRestSensorData.init().inserTimeLocation("aurora",(float)loc.getLatitude(),(float)loc.getLongitude());
-        AsynRestSensorData.MyCall<TimeLocation[]> mycall=new AsynRestSensorData.MyCall<TimeLocation[]>(
-                (TimeLocation [] e)->{
-                    Log.d("MyGeo", "all tracks..."+e.length);
-                   paintTrack(e);
-                }
-        );
-        mycall.execute(call);
+            Call<TimeLocation[]> call = AsynRestSensorData.init().inserTimeLocation("aurora", (float) loc.getLatitude(), (float) loc.getLongitude());
+            AsynRestSensorData.MyCall<TimeLocation[]> mycall = new AsynRestSensorData.MyCall<TimeLocation[]>(
+                    (TimeLocation[] e) -> {
+                        Log.d("MyGeo", "all tracks..." + e.length);
+                        paintTrack(e);
+                    }
+            );
+            mycall.execute(call);
+        }
 
     }
 
@@ -427,4 +425,5 @@ public class GeoActivity extends Activity implements LocationListener {
             map.getOverlays().add(startMarker);
         }
     }
+
 }

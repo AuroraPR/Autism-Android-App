@@ -1,5 +1,6 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.data;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,96 +12,35 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.nfc.tech.NfcA;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import retrofit2.Call;
+import jmq.uja.org.mygeosensorapp.R;
 
-public class CashActivity extends FragmentActivity {
+public class NFCRead extends Activity {
+
+    public static final String TAG = "MyGeo";
     private NfcAdapter mNfcAdapter;
-    ListView listView;
-    List<CashMovement> data;
-    CashMovementsAdapter adapter;
-    TextView tCash;
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_main);
-        tCash = (TextView) findViewById(R.id.tCash);
-        listView = (ListView) findViewById(R.id.sMovimientos);
-        data=new LinkedList<CashMovement>();
-        listView.setAdapter(adapter=new CashMovementsAdapter(this,data));
+        initViews();
+    }
 
-
+    private void initViews() {
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
-        Call<CashMovement []> call = AsynRestSensorData.init().getCashMovement("aurora");
-        AsynRestSensorData.MyCall<CashMovement[]> mycall=new AsynRestSensorData.MyCall<CashMovement[]>(
-                (CashMovement [] e)->{
-                    paintCashMovements(e);
-                }
-        );
-        mycall.execute(call);
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void paintCashMovements(CashMovement [] e){
-        Log.d("MyGeo", "RECEIVED:"+ e);
-        float total=0f;
-        for(CashMovement cm:e)
-            total+=cm.money;
-        tCash.setText(Utils.round(total,2)+"€");
-
-
-
-        data= Arrays.asList(e);
-        Comparator<CashMovement> comparator = Comparator.comparing(CashMovement::getTime);
-        Collections.sort(data, comparator.reversed());
-
-
-        adapter.update(data);
-        Utils.setDynamicHeight(listView);
-    }
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void parseNFC(String text){
-
-        float money=Float.parseFloat(text.substring(0,text.indexOf("@")));
-        String concept=text.substring(text.indexOf("@")+1);
-
-        Log.d("MyGeo", "money:"+money);
-        Log.d("MyGeo", "concept:"+concept);
-        Call<CashMovement []> call = AsynRestSensorData.init().insertCashMovement("aurora",money,concept);
-        AsynRestSensorData.MyCall<CashMovement[]> mycall=new AsynRestSensorData.MyCall<CashMovement[]>(
-                (CashMovement [] e)->{
-                    paintCashMovements(e);
-                }
-        );
-        mycall.execute(call);
-
     }
 
     @Override
@@ -117,13 +57,13 @@ public class CashActivity extends FragmentActivity {
         if (mNfcAdapter != null)
             mNfcAdapter.enableForegroundDispatch(this, pendingIntent, nfcIntentFilter, null);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         if (mNfcAdapter != null)
             mNfcAdapter.disableForegroundDispatch(this);
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -226,9 +166,7 @@ public class CashActivity extends FragmentActivity {
                         byte[] payload = record.getPayload();
                         String text = new String(payload);
 
-                        Log.d("MyGeo", "vahid  -->  " + text);
-                        parseNFC(text);
-
+                        Log.e("MyG", "vahid  -->  " + text);
                         ndef.close();
 
                     }
@@ -247,7 +185,6 @@ public class CashActivity extends FragmentActivity {
                         if (ndefMessage != null) {
                             String message = new String(ndefMessage.getRecords()[0].getPayload());
                             Log.d("MyGeo", "NFC found.. " + "readFromNFC: " + message);
-
                             ndef.close();
                         } else {
                             Toast.makeText(this, "Not able to read from NFC, Please try again...", Toast.LENGTH_LONG).show();

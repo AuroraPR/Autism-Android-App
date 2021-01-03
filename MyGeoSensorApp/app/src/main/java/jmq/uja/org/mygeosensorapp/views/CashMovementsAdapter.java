@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.views;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.List;
+
+import jmq.uja.org.mygeosensorapp.data.CashMovement;
+import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.Utils;
 
 public class CashMovementsAdapter extends BaseAdapter {
     private Context context;
@@ -80,7 +83,7 @@ public class CashMovementsAdapter extends BaseAdapter {
         }
 
         public void setData(CashMovement data){
-            this.tMoney.setText(Utils.round(data.money,2)+"€");
+            this.tMoney.setText(Utils.round(data.money,2)+" p.");
             this.tDate.setText(Utils.minit02S(data.time));
             this.tConcept.setText(data.concept);
 

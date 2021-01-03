@@ -1,22 +1,16 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.data;
 
-import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public class AsynRestSensorData {
@@ -24,20 +18,20 @@ public class AsynRestSensorData {
     static public interface ServiceSensorData{
 
         @GET("insert_location/{user}/{lat}/{lon}")
-        public Call<TimeLocation []> inserTimeLocation(
+        public Call<TimeLocation[]> inserTimeLocation(
                 @Path("user") String user,
                 @Path("lat") Float lat,
                 @Path("lon") Float lon
         );
 
         @GET("get_location_resources/{user}")
-        public Call<ResourceLocation []> getResourceLocation(
+        public Call<ResourceLocation[]> getResourceLocation(
                 @Path("user") String user
         );
 
 
         @GET("get_cash_movement/{user}")
-        public Call<CashMovement []> getCashMovement(
+        public Call<CashMovement[]> getCashMovement(
                 @Path("user") String user
         );
 
@@ -50,7 +44,7 @@ public class AsynRestSensorData {
         );
 
         @GET("get_task/{user}/{currentTime}")
-        public Call<Task []> getTask(
+        public Call<Task[]> getTask(
                 @Path("user") String user,
                 @Path("currentTime") Long currentTime
         );

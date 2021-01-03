@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:padding="15dp"
     android:fillViewport="true" >
     <LinearLayout
         android:orientation="vertical"
@@ -12,8 +13,9 @@
             android:id="@+id/userName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Aurora Polo"
-            android:textColor="#040404"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp"
             android:textStyle="bold"
             android:typeface="sans" />
@@ -28,7 +30,8 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dinero disponible"
+            android:text="Puntos disponibles"
+            android:textColor="@color/colorPrimary"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -58,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Últimos movimientos"
+            android:textColor="@color/colorPrimary"
             android:textSize="30sp"
             android:textStyle="bold" />
 

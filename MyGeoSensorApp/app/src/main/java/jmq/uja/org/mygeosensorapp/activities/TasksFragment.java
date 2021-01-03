@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp;
+package jmq.uja.org.mygeosensorapp.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
+import jmq.uja.org.mygeosensorapp.data.Task;
 import jmq.uja.org.mygeosensorapp.views.GridListAdapter;
 import retrofit2.Call;
 
@@ -79,67 +82,21 @@ public class TasksFragment extends Fragment {
             public void onClick(View view) {
                 SparseBooleanArray selectedRows = adapter.getSelectedIds();//Get the selected ids from adapter
                 //Check if item is selected or not via size
-                if (selectedRows.size() > 0) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    //Loop to all the selected rows array
-                    for (int i = 0; i < selectedRows.size(); i++) {
-
-                        //Check if selected rows have value i.e. checked item
-                        if (selectedRows.valueAt(i)) {
-
-                            //Get the checked item text from array list by getting keyAt method of selectedRowsarray
-                            String selectedRowLabel = arrayList.get(selectedRows.keyAt(i));
-
-                            //append the row label text
-                            stringBuilder.append(selectedRowLabel + "\n");
-                        }
-                    }
-                    Toast.makeText(context, "Selected Rows\n" + stringBuilder.toString(), Toast.LENGTH_SHORT).show();
-                }
+                StringBuilder stringBuilder = new StringBuilder();
+                int remainingTasks= arrayList.size()-selectedRows.size();
+                Toast.makeText(context, "Tareas restantes: " + remainingTasks, Toast.LENGTH_SHORT).show();
 
             }
         });
-        view.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SparseBooleanArray selectedRows = adapter.getSelectedIds();//Get the selected ids from adapter
-                //Check if item is selected or not via size
-                if (selectedRows.size() > 0) {
-                    //Loop to all the selected rows array
-                    for (int i = (selectedRows.size() - 1); i >= 0; i--) {
 
-                        //Check if selected rows have value i.e. checked item
-                        if (selectedRows.valueAt(i)) {
-
-                            //remove the checked item
-                            arrayList.remove(selectedRows.keyAt(i));
-                        }
-                    }
-
-                    //notify the adapter and remove all checked selection
-                    adapter.removeSelection();
-                }
-            }
-        });
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //Check the current text of Select Button
-                if (selectButton.getText().toString().equals(getResources().getString(R.string.select_all))) {
+                if (selectButton.getText().toString().equals(getResources().getString(R.string.add_task))) {
 
-                    //If Text is Select All then loop to all array List items and check all of them
-                    for (int i = 0; i < arrayList.size(); i++)
-                        adapter.checkCheckBox(i, true);
 
-                    //After checking all items change button text
-                    selectButton.setText(getResources().getString(R.string.deselect_all));
-                } else {
-                    //If button text is Deselect All remove check from all items
-                    adapter.removeSelection();
-
-                    //After checking all items change button text
-                    selectButton.setText(getResources().getString(R.string.select_all));
                 }
 
 
