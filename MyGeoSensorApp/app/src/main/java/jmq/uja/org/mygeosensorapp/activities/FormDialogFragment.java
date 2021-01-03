@@ -131,9 +131,6 @@ public class FormDialogFragment extends AppCompatDialogFragment {
     mDate = content.findViewById(R.id.textInputLastName);
     textInputFirstName.setText(getArguments().getString(ARG_FIRSTNAME));
     textInputFirstName.setSelection(getArguments().getString(ARG_FIRSTNAME).length());
-    mDate.setText(getArguments().getString(ARG_LASTNAME));
-    //textInputLastName.setSelection(getArguments().getString(ARG_LASTNAME).length());
-
     mDate.setOnEditorActionListener((textView, actionId, keyEvent) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         returnValues();
