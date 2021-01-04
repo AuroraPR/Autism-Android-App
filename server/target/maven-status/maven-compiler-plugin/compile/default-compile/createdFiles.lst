@@ -1,0 +1,7 @@
+org\jmq\sensordata\JerseyEmbeddedHTTPServerCrunchify.class
+org\jmq\sensordata\MyGeoServlet.class
+org\jmq\sensordata\ResourceLocation.class
+org\jmq\sensordata\Task.class
+org\jmq\sensordata\TimeLocation.class
+org\jmq\sensordata\CashMovement.class
+org\jmq\sensordata\Property.class
