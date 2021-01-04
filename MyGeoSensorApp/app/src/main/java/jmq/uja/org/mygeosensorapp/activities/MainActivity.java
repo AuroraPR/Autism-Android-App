@@ -72,10 +72,13 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
                 }
                 if (menuItem.getItemId()==R.id.menu_emergency){
                     checkPermissionSMS();
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
-                    Toast.makeText(getApplicationContext(), "SMS enviado",
-                    Toast.LENGTH_LONG).show();
+                    try {
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                        Toast.makeText(getApplicationContext(), "SMS enviado", Toast.LENGTH_LONG).show();
+                    } catch (Exception e){
+                        Toast.makeText(getApplicationContext(), "Ha denegado el permiso de envío de SMS", Toast.LENGTH_LONG).show();
+                    }
                 }
 
                 return true;
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Ha fallado, prueba de nuevo", Toast.LENGTH_LONG).show();
+                            "Permiso denegado. Esta función no estará disponible", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
