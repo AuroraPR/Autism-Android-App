@@ -10,12 +10,13 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
+import jmq.uja.org.mygeosensorapp.data.Task;
+import retrofit2.Call;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-
-/**
- * Created by sonu on 08/02/17.
- */
+import java.util.Date;
 
 public class GridListAdapter extends BaseAdapter {
     private Context context;
@@ -23,15 +24,25 @@ public class GridListAdapter extends BaseAdapter {
     private ArrayList<String> arrayList2;
     private LayoutInflater inflater;
     private boolean isListView;
+    private Task[] taskArray;
     private SparseBooleanArray mSelectedItemsIds;
+    private DateFormat df=DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
 
-    public GridListAdapter(Context context, ArrayList<String> arrayList, ArrayList<String> arrayList2, boolean isListView) {
+    public GridListAdapter(Context context, Task[] array, boolean isListView) {
         this.context = context;
-        this.arrayList = arrayList;
-        this.arrayList2 =arrayList2;
+        taskArray = array;
         this.isListView = isListView;
         inflater = LayoutInflater.from(context);
+        arrayList = new ArrayList<>();
+        arrayList2 = new ArrayList<>();
         mSelectedItemsIds = new SparseBooleanArray();
+        int i=0;
+        for (Task task : array) {
+            arrayList.add(task.name);//Adding items to recycler view
+            arrayList2.add(df.format(new Date(task.date)));//Adding items to recycler view
+            mSelectedItemsIds.append(i,task.check);
+            i=i+1;
+        }
     }
 
     @Override
@@ -116,12 +127,23 @@ public class GridListAdapter extends BaseAdapter {
      * Check the Checkbox if not checked
      **/
     public void checkCheckBox(int position, boolean value) {
-        if (value)
+        Call<Task[]> call=null;
+        if (value) {
             mSelectedItemsIds.put(position, true);
-        else
-            mSelectedItemsIds.delete(position);
+            taskArray[position].setCheck(false);
+            call = AsynRestSensorData.init().modifyTask(taskArray[position].user,taskArray[position].name,taskArray[position].date,true);
 
-        notifyDataSetChanged();
+        }
+        else {
+            mSelectedItemsIds.delete(position);
+            taskArray[position].setCheck(false);
+            call = AsynRestSensorData.init().modifyTask(taskArray[position].user,taskArray[position].name,taskArray[position].date,false);
+        }
+
+        AsynRestSensorData.MyCall<Task[]> tasks=new AsynRestSensorData.MyCall<Task[]>(
+                (e)->{notifyDataSetChanged();}
+        );
+        tasks.execute(call);
     }
 
     /**

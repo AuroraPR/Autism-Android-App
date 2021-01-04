@@ -25,6 +25,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
+import jmq.uja.org.mygeosensorapp.data.Task;
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity implements FormDialogListener{
     BottomNavigationView bn;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
     private NfcAdapter mNfcAdapter;
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
-    String phoneNo = "657019300";
+    String phoneNo = "658680447";
     String message = "PROBANDO DESDE LA APP";
 
     private TextView newTaskName;
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Permiso denegado. Esta función no estará disponible", Toast.LENGTH_LONG).show();
+                            "Permiso a SMS denegado. Esta función no está disponible", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
@@ -160,9 +163,15 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
     }
 
     @Override
-    public void update(String firstname, String lastname) {
-        newTaskName.setText(firstname);
-        System.out.println(newTaskName.getText().toString());
-        newTaskDate.setText(lastname);
+    public void update(String taskName, String taskDate) {
+        newTaskName.setText("");
+        newTaskDate.setText("");
+
+        Call<Task[]> call = AsynRestSensorData.init().insertTask("aurora",taskName,Long.parseLong(taskDate));
+        AsynRestSensorData.MyCall<Task[]> mycall=new AsynRestSensorData.MyCall<>(
+                (Task [] e)->{showSelectedFragment(new TasksFragment(newTaskName, newTaskDate));}
+        );
+        mycall.execute(call);
     }
+
 }

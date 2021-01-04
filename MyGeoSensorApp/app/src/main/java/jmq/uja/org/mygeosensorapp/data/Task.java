@@ -8,11 +8,12 @@ public class Task {
         this.user = user;
         this.name = name;
         this.date = date;
+        this.check = false;
     }
 
     @Override
     public String toString() {
-        return "Task{" + "user=" + user + ", name=" + name + ", date=" + date + '}';
+        return "Task{" + "user=" + user + ", name=" + name + ", date=" + date + ", check=" + check +'}';
     }
 
     @Override
@@ -21,6 +22,7 @@ public class Task {
         hash = 89 * hash + Objects.hashCode(this.user);
         hash = 89 * hash + Objects.hashCode(this.name);
         hash = 89 * hash + Objects.hashCode(this.date);
+        hash = 89 * hash + Objects.hashCode(this.check);
         return hash;
     }
 
@@ -45,10 +47,18 @@ public class Task {
         if (!Objects.equals(this.date, other.date)) {
             return false;
         }
+        if (!Objects.equals(this.check, other.check)) {
+            return false;
+        }
         return true;
+    }
+
+    public void setCheck(boolean check){
+        this.check=check;
     }
 
     public String user;
     public String name;
     public long date;
+    public boolean check;
 }

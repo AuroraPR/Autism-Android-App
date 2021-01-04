@@ -19,6 +19,10 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import jmq.uja.org.mygeosensorapp.R;
+import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
+import jmq.uja.org.mygeosensorapp.data.CashMovement;
+import jmq.uja.org.mygeosensorapp.data.Task;
+import retrofit2.Call;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.annotation.NonNull;
@@ -40,7 +44,7 @@ public class FormDialogFragment extends AppCompatDialogFragment {
   private static final String ARG_LASTNAME = "ARG_LASTNAME";
 
   private TextInputLayout textInputLayoutFirstName;
-  private EditText textInputFirstName;
+  private EditText mName;
   private FormDialogListener listener;
 
   private SimpleDateFormat mSimpleDateFormat;
@@ -112,7 +116,7 @@ public class FormDialogFragment extends AppCompatDialogFragment {
   }
 
   private boolean validate() {
-    if (TextUtils.isEmpty(textInputFirstName.getText())) {
+    if (TextUtils.isEmpty(mName.getText())) {
       textInputLayoutFirstName.setError(getString(R.string.mandatory));
       textInputLayoutFirstName.setErrorEnabled(true);
       return false;
@@ -121,16 +125,16 @@ public class FormDialogFragment extends AppCompatDialogFragment {
   }
 
   private void returnValues() {
-    listener.update(textInputFirstName.getText().toString(),
-            mDate.getText().toString());
+    listener.update(mName.getText().toString(), Long.toString(mCalendar.getTimeInMillis()));
+
   }
 
   private void setupContent(View content) {
     textInputLayoutFirstName = content.findViewById(R.id.textInputLayoutFirstName);
-    textInputFirstName = content.findViewById(R.id.textInputFirstName);
+    mName = content.findViewById(R.id.textInputFirstName);
     mDate = content.findViewById(R.id.textInputLastName);
-    textInputFirstName.setText(getArguments().getString(ARG_FIRSTNAME));
-    textInputFirstName.setSelection(getArguments().getString(ARG_FIRSTNAME).length());
+    mName.setText(getArguments().getString(ARG_FIRSTNAME));
+    mName.setSelection(getArguments().getString(ARG_FIRSTNAME).length());
     mDate.setOnEditorActionListener((textView, actionId, keyEvent) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         returnValues();
@@ -140,10 +144,10 @@ public class FormDialogFragment extends AppCompatDialogFragment {
       return false;
     });
 
-    textInputFirstName.addTextChangedListener(new TextWatcher() {
+    mName.addTextChangedListener(new TextWatcher() {
       @Override
       public void afterTextChanged(Editable s) {
-        if (textInputFirstName.getVisibility() == View.VISIBLE) {
+        if (mName.getVisibility() == View.VISIBLE) {
           textInputLayoutFirstName.setError(null);
         }
       }
@@ -159,9 +163,6 @@ public class FormDialogFragment extends AppCompatDialogFragment {
       }
     });
   }
-
-
-
 
   /* Define the onClickListener, and start the DatePickerDialog with users current time */
   private final View.OnClickListener textListener = new View.OnClickListener() {

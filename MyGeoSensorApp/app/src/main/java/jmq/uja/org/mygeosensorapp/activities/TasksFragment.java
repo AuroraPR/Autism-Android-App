@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,10 +32,9 @@ public class TasksFragment extends Fragment {
     private ArrayList<String> arrayList;
     private ArrayList<String> arrayList2;
     private Button selectButton;
-    private Locale locale=new Locale("es", "ES");
-    private DateFormat df=DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
     private TextView newTaskName;
     private TextView newTaskDate;
+    private SparseBooleanArray mSelectedItemsIds;
 
     public TasksFragment(TextView newTaskName, TextView newTaskDate) {
         this.newTaskName = newTaskName;
@@ -58,8 +58,14 @@ public class TasksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         selectButton = (Button) view.findViewById(R.id.select_button);
 
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
         Call<Task[]> call=null;
-        call = AsynRestSensorData.init().getTask("aurora", System.currentTimeMillis());
+        call = AsynRestSensorData.init().getTask("aurora", c.getTime().getTime());
         AsynRestSensorData.MyCall<Task[]> tasks=new AsynRestSensorData.MyCall<Task[]>(
                 (e)->{loadListView(view,e);}
         );
@@ -71,16 +77,9 @@ public class TasksFragment extends Fragment {
     private void loadListView(View view, Task[] array) {
 
         ListView listView = (ListView) view.findViewById(R.id.list_view);
-        arrayList = new ArrayList<>();
-        arrayList2 = new ArrayList<>();
-        for (Task task : array) {
-            arrayList.add(task.name);//Adding items to recycler view
-
-            arrayList2.add(df.format(new Date(task.date)));//Adding items to recycler view
-        }
-
-        adapter = new GridListAdapter(context, arrayList, arrayList2, true);
+        adapter = new GridListAdapter(context,array,true);
         listView.setAdapter(adapter);
+
     }
 
     private void onClickEvent(View view) {
@@ -111,7 +110,6 @@ public class TasksFragment extends Fragment {
                     form.show(getActivity().getSupportFragmentManager(), FormDialogFragment.TAG);
 
                 }
-
 
             }
         });

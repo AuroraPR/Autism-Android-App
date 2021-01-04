@@ -43,20 +43,27 @@ public class AsynRestSensorData {
                 @Path("concept") String concept
         );
 
-        @GET("get_task/{user}/{currentTime}")
+        @GET("get_task/{user}/{currentDay}")
         public Call<Task[]> getTask(
                 @Path("user") String user,
-                @Path("currentTime") Long currentTime
+                @Path("currentDay") Long currentDay
         );
 
         @GET("insert_task/{user}/{name}/{date}")
         public Call<Task []> insertTask(
                 @Path("user") String user,
                 @Path("name") String name,
-                @Path("date") Date date
+                @Path("date") long date
         );
 
 
+        @GET("modify_task/{user}/{name}/{date}/{check}")
+        public Call<Task []> modifyTask(
+                @Path("user") String user,
+                @Path("name") String name,
+                @Path("date") long date,
+                @Path("check") boolean check
+        );
     }
 
 
