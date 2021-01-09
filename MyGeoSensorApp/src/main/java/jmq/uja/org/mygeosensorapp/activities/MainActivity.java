@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.activities;
+package apr.autismapp.activities;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -24,9 +24,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import jmq.uja.org.mygeosensorapp.R;
-import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
-import jmq.uja.org.mygeosensorapp.data.Task;
+import apr.autismapp.R;
+import apr.autismapp.data.AsynRestSensorData;
+import apr.autismapp.data.Task;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity implements FormDialogListener{

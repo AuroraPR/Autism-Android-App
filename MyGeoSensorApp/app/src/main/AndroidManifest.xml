@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jmq.uja.org.mygeosensorapp">
+    package="apr.autismapp">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.MainActivity">
+            android:name="apr.autismapp.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -32,10 +32,10 @@
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
-            android:name=".activities.SigninActivity">
+            android:name="apr.autismapp.activities.SigninActivity">
         </activity>
         <activity
-            android:name=".activities.LoginActivity">
+            android:name="apr.autismapp.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

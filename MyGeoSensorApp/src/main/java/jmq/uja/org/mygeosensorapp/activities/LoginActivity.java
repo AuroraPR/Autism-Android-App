@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.activities;
+package apr.autismapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import androidx.appcompat.app.AppCompatActivity;
-import jmq.uja.org.mygeosensorapp.R;
-import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
-import jmq.uja.org.mygeosensorapp.data.Task;
-import jmq.uja.org.mygeosensorapp.data.UserPass;
+import apr.autismapp.R;
+import apr.autismapp.data.AsynRestSensorData;
+import apr.autismapp.data.Task;
+import apr.autismapp.data.UserPass;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {

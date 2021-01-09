@@ -32,11 +32,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import org.jmq.sensordata.model.CashMovement;
-import org.jmq.sensordata.model.ResourceLocation;
-import org.jmq.sensordata.model.Task;
-import org.jmq.sensordata.model.TimeLocation;
-import org.jmq.sensordata.model.security.Secured;
+import apr.model.CashMovement;
+import apr.model.ResourceLocation;
+import apr.model.Task;
+import apr.model.TimeLocation;
+import apr.model.security.Secured;
 import static org.jmq.sensordata.services.MongoDS.getMongoDataStore;
 
 

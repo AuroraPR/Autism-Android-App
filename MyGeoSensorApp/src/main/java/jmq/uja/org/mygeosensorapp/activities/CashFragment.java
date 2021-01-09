@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.activities;
+package apr.autismapp.activities;
 
 import android.content.Intent;
 import android.nfc.NdefMessage;
@@ -32,11 +32,11 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import jmq.uja.org.mygeosensorapp.R;
-import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
-import jmq.uja.org.mygeosensorapp.data.CashMovement;
-import jmq.uja.org.mygeosensorapp.data.Utils;
-import jmq.uja.org.mygeosensorapp.views.CashMovementsAdapter;
+import apr.autismapp.R;
+import apr.autismapp.data.AsynRestSensorData;
+import apr.autismapp.data.CashMovement;
+import apr.autismapp.data.Utils;
+import apr.autismapp.views.CashMovementsAdapter;
 import retrofit2.Call;
 
 

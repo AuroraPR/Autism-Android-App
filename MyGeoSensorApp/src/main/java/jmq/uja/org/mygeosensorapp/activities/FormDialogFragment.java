@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.activities;
+package apr.autismapp.activities;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -18,10 +18,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import jmq.uja.org.mygeosensorapp.R;
-import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
-import jmq.uja.org.mygeosensorapp.data.CashMovement;
-import jmq.uja.org.mygeosensorapp.data.Task;
+import apr.autismapp.R;
+import apr.autismapp.data.AsynRestSensorData;
+import apr.autismapp.data.CashMovement;
+import apr.autismapp.data.Task;
 import retrofit2.Call;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

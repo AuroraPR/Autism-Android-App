@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.data;
+package apr.autismapp.data;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import jmq.uja.org.mygeosensorapp.R;
+import apr.autismapp.R;
 
 public class NFCRead extends Activity {
 

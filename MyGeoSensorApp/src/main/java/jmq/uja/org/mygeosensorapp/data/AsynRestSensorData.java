@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.data;
+package apr.autismapp.data;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;

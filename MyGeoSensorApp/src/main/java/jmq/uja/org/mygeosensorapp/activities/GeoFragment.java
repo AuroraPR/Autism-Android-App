@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.activities;
+package apr.autismapp.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -39,10 +39,10 @@ import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
 
-import jmq.uja.org.mygeosensorapp.R;
-import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
-import jmq.uja.org.mygeosensorapp.data.ResourceLocation;
-import jmq.uja.org.mygeosensorapp.data.TimeLocation;
+import apr.autismapp.R;
+import apr.autismapp.data.AsynRestSensorData;
+import apr.autismapp.data.ResourceLocation;
+import apr.autismapp.data.TimeLocation;
 import retrofit2.Call;
 
 

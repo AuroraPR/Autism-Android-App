@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp;
+package apr.autismapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("jmq.uja.org.mygeosensorapp", appContext.getPackageName());
+        assertEquals("apr.mygeosensorapp", appContext.getPackageName());
     }
 }

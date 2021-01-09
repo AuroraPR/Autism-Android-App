@@ -12,7 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import org.jmq.sensordata.model.security.RestSecurityFilter;
+import apr.model.security.RestSecurityFilter;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +21,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.jmq.sensordata.model.Task;
-import org.jmq.sensordata.model.UserPass;
+import apr.model.Task;
+import apr.model.UserPass;
 import static org.jmq.sensordata.services.MongoDS.getMongoDataStore;
 
 @Path("/usuario")

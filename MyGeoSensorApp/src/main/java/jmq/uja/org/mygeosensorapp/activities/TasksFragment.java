@@ -1,4 +1,4 @@
-package jmq.uja.org.mygeosensorapp.activities;
+package apr.autismapp.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,10 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import jmq.uja.org.mygeosensorapp.R;
-import jmq.uja.org.mygeosensorapp.data.AsynRestSensorData;
-import jmq.uja.org.mygeosensorapp.data.Task;
-import jmq.uja.org.mygeosensorapp.views.GridListAdapter;
+import apr.autismapp.R;
+import apr.autismapp.data.AsynRestSensorData;
+import apr.autismapp.data.Task;
+import apr.autismapp.views.GridListAdapter;
 import retrofit2.Call;
 
 public class TasksFragment extends Fragment {
