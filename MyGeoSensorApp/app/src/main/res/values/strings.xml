@@ -21,4 +21,11 @@
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
     <string name="select_date">Selecciona la fecha</string>
+
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="emergencyNumber">Número de contacto de emergencia</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="signin">Registrarse</string>
 </resources>

@@ -46,7 +46,15 @@
 		    <version>2.30.1</version>
 		</dependency> 
                 
+                <dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.7.0</version>
+		</dependency>
+                
                 <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-servlets -->
 
   </dependencies>
+  
+
 </project>

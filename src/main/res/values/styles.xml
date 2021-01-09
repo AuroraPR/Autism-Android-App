@@ -1,0 +1,51 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar.PrimarySurface">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+    </style>
+
+    <style name="AppTheme.Margins">
+        <item name="android:layout_marginTop">@dimen/vertical_separator</item>
+        <item name="android:layout_marginLeft">@dimen/activity_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_margin</item>
+    </style>
+
+    <style name="AppTheme.TextInputLayoutForm" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/vertical_separator</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!-- el color de relleno, por defecto es colorOnSurface-->
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.TextViewLabel" parent="AppTheme.Margins">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/activity_margin</item>
+    </style>
+
+    <style name="AppTheme.TextViewContent" parent="AppTheme.Margins">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/activity_margin</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+    </style>
+</resources>
