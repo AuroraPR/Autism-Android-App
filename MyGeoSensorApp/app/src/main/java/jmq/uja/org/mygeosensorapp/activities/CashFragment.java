@@ -42,12 +42,19 @@ import retrofit2.Call;
 
 public class CashFragment extends Fragment {
 
-    private NfcAdapter mNfcAdapter;
     ListView listView;
     List<CashMovement> data;
     CashMovementsAdapter adapter;
     TextView tCash;
     Intent onNewIntent;
+    String name="";
+    String username="";
+    TextView tName;
+
+    public CashFragment(String name, String username){
+        this.name = name;
+        this.username = username;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,8 @@ public class CashFragment extends Fragment {
         if(args!=null)
             onNewIntent=args.getParcelable("onNewIntent");
 
+        tName = (TextView) root.findViewById(R.id.tName);
+        tName.setText(name);
         tCash = (TextView) root.findViewById(R.id.tCash);
         listView = (ListView) root.findViewById(R.id.sMovimientos);
         data = new LinkedList<CashMovement>();
@@ -72,7 +81,7 @@ public class CashFragment extends Fragment {
 
         //mNfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
 
-        Call<CashMovement[]> call = AsynRestSensorData.init().getCashMovement("aurora");
+        Call<CashMovement[]> call = AsynRestSensorData.init().getCashMovement(username);
         AsynRestSensorData.MyCall<CashMovement[]> mycall = new AsynRestSensorData.MyCall<CashMovement[]>(
                 (CashMovement[] e) -> {
                     paintCashMovements(e);
@@ -109,7 +118,7 @@ public class CashFragment extends Fragment {
 
         Log.d("MyGeo", "money:"+money);
         Log.d("MyGeo", "concept:"+concept);
-        Call<CashMovement []> call = AsynRestSensorData.init().insertCashMovement("aurora",money,concept);
+        Call<CashMovement []> call = AsynRestSensorData.init().insertCashMovement(username,money,concept);
         AsynRestSensorData.MyCall<CashMovement[]> mycall=new AsynRestSensorData.MyCall<CashMovement[]>(
                 (CashMovement [] e)->{
                     paintCashMovements(e);

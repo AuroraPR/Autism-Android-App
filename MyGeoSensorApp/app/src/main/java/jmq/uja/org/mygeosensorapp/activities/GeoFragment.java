@@ -50,6 +50,13 @@ public class GeoFragment extends Fragment implements LocationListener {
 
     MapView map = null;
     TextView tv =null;
+    String name = "";
+    String username = "";
+
+    public GeoFragment(String name, String username){
+        this.name = name;
+        this.username = username;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,7 @@ public class GeoFragment extends Fragment implements LocationListener {
         // get map controller
 
         //       addCenterMarker();
-        Call<ResourceLocation[]> call = AsynRestSensorData.init().getResourceLocation("aurora");
+        Call<ResourceLocation[]> call = AsynRestSensorData.init().getResourceLocation(username);
         AsynRestSensorData.MyCall<ResourceLocation[]> mycall=new AsynRestSensorData.MyCall<ResourceLocation[]>(
                 (ResourceLocation [] e)->{
                     paintSensorProperty(e);
@@ -129,7 +136,6 @@ public class GeoFragment extends Fragment implements LocationListener {
                 dialog.cancel();
             }
         });
-
         alertDialog.show();
     }
 
@@ -382,12 +388,12 @@ public class GeoFragment extends Fragment implements LocationListener {
             if (currentLocation != null)
                 this.map.getOverlays().remove(currentLocation);
             currentLocation = new Marker(map);
-            currentLocation.setTitle("Aurora");
+            currentLocation.setTitle(name);
             currentLocation.setPosition(new GeoPoint(loc.getLatitude(), loc.getLongitude()));
             currentLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
 
-            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ap, null);
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.pushpin, null);
             Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
             Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
             currentLocation.setIcon(d);
@@ -400,7 +406,7 @@ public class GeoFragment extends Fragment implements LocationListener {
             //getLocation();
 
 
-            Call<TimeLocation[]> call = AsynRestSensorData.init().inserTimeLocation("aurora", (float) loc.getLatitude(), (float) loc.getLongitude());
+            Call<TimeLocation[]> call = AsynRestSensorData.init().inserTimeLocation(username, (float) loc.getLatitude(), (float) loc.getLongitude());
             AsynRestSensorData.MyCall<TimeLocation[]> mycall = new AsynRestSensorData.MyCall<TimeLocation[]>(
                     (TimeLocation[] e) -> {
                         Log.d("MyGeo", "all tracks..." + e.length);

@@ -18,7 +18,7 @@
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:id = "@+id/editText"
-        android:hint = "@string/name"
+        android:hint = "@string/username"
         android:focusable = "true"
         android:textColorHighlight = "#ff7eff15"
         android:textColorHint = "@color/colorPrimary"
@@ -31,8 +31,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ap" />
@@ -61,6 +61,7 @@
         android:layout_marginTop = "30dp"
         android:layout_below = "@+id/editText2"
         android:layout_centerInParent="true"
+
          />
 
     <Button

@@ -32,6 +32,9 @@
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
+            android:name=".activities.SigninActivity">
+        </activity>
+        <activity
             android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -27,9 +27,11 @@ public class AsynRestSensorData {
                 @Query("password") String password
         );
         @GET("add")
-        public Call<UserPass> add(
+        public Call<UserPass> addUser(
                 @Query("user") String user,
-                @Query("password") String password
+                @Query("password") String password,
+                @Query("name") String name,
+                @Query("emergencyNumber") String emergencyNumber
         );
     }
 
@@ -86,7 +88,7 @@ public class AsynRestSensorData {
     }
 
 
-    static public String baseURL="http://192.168.1.23:8092";
+    static public String baseURL="http://192.168.43.46:8092";
     static public String token="wep";
 
     static public ServiceSensorData init(){

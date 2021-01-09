@@ -48,7 +48,9 @@ public class UsuarioResource {
             // Devolvemos el token en la cabecera "Authorization". 
             // Se podría devolver también en la respuesta directamente.
             System.out.println("ok");
-           return Response.ok().entity(new UserPass(user,token)).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
+            UserPass userFound = getMongoDataStore(user).find(UserPass.class)
+					.filter(Filters.eq("user", user), Filters.eq("password", password)).first();
+           return Response.ok().entity(new UserPass(user,token, userFound.name, userFound.emergencyNumber)).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
  
         } catch (Exception e) {
              System.out.println("ko");
@@ -70,7 +72,7 @@ public class UsuarioResource {
           password=getHash(server_salt+password);
           Datastore datastore = getMongoDataStore(user);
           datastore.save(new UserPass(user,password,name,emergencyNumber));
-           return Response.ok().entity(new UserPass(user,"")).build();
+           return Response.ok().entity(new UserPass(user,"",name,emergencyNumber)).build();
  
         } catch (Exception e) {
              System.out.println("ko");

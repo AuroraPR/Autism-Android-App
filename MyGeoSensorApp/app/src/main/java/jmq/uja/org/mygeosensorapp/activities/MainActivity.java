@@ -35,9 +35,10 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
     private NfcAdapter mNfcAdapter;
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
-    String phoneNo = "658680447";
-    String message = "PROBANDO DESDE LA APP";
-
+    String phoneNo="";
+    String name="";
+    String message = "NECESITO AYUDA. Consulta mi localización desde la app de IguDif";
+    String username="";
     private TextView newTaskName;
     private Button newTaskDate;
 
@@ -49,34 +50,37 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
 
         Bundle b = getIntent().getExtras();
         String token =""; // or other values
-        if(b != null)
+        if(b != null) {
             token = b.getString("token");
+            phoneNo = b.getString("phone");
+            name = b.getString("name");
+            username = b.getString("username");
+        }
         AsynRestSensorData.token=token;
-
         bn=(BottomNavigationView) findViewById(R.id.bottomNavigation);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         newTaskName = new TextView(this);
         newTaskDate = new Button(this);
 
-        showSelectedFragment(new TasksFragment(newTaskName, newTaskDate));
+        showSelectedFragment(new TasksFragment(newTaskName, newTaskDate,username));
 
         bn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 if (menuItem.getItemId()==R.id.menu_task&&prevSelected!=R.id.menu_task){
-                    Fragment actualFragment=new TasksFragment(newTaskName, newTaskDate);
+                    Fragment actualFragment=new TasksFragment(newTaskName, newTaskDate, username);
                     showSelectedFragment(actualFragment);
                     prevSelected=R.id.menu_task;
                 }
                 if (menuItem.getItemId()==R.id.menu_rewards&&prevSelected!=R.id.menu_rewards){
-                    Fragment actualFragment=new CashFragment();
+                    Fragment actualFragment=new CashFragment(name,username);
                     showSelectedFragment(actualFragment);
                     prevSelected=R.id.menu_rewards;
                 }
                 if (menuItem.getItemId()==R.id.menu_maps&&prevSelected!=R.id.menu_maps){
-                    Fragment actualFragment=new GeoFragment();
+                    Fragment actualFragment=new GeoFragment(name,username);
                     showSelectedFragment(actualFragment);
                     prevSelected=R.id.menu_maps;
                 }
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
     protected void onNewIntent(Intent intent) {
         //if(prevSelected==R.id.menu_rewards) {
         super.onNewIntent(intent);
-        CashFragment fragInfo = new CashFragment();
+        CashFragment fragInfo = new CashFragment(name,username);
         fragInfo.resolveIntent(intent);
         prevSelected = R.id.menu_rewards;
         bn.setSelectedItemId(prevSelected);
@@ -174,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
         newTaskName.setText("");
         newTaskDate.setText("");
 
-        Call<Task[]> call = AsynRestSensorData.init().insertTask("aurora",taskName,Long.parseLong(taskDate));
+        Call<Task[]> call = AsynRestSensorData.init().insertTask(username,taskName,Long.parseLong(taskDate));
         AsynRestSensorData.MyCall<Task[]> mycall=new AsynRestSensorData.MyCall<>(
-                (Task [] e)->{showSelectedFragment(new TasksFragment(newTaskName, newTaskDate));}
+                (Task [] e)->{showSelectedFragment(new TasksFragment(newTaskName, newTaskDate,username));}
         );
         mycall.execute(call);
     }

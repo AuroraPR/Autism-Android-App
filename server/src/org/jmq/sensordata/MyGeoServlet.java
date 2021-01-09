@@ -64,10 +64,16 @@ public class MyGeoServlet {
                         ds.save(data);
                         System.out.println("Inserted data "+data);
                         
+                        Calendar c = Calendar.getInstance();
+                        c.set(Calendar.HOUR_OF_DAY, 0);
+                        c.set(Calendar.MINUTE, 0);
+                        c.set(Calendar.SECOND, 0);
+                        c.set(Calendar.MILLISECOND, 0);
+                        
                          List<TimeLocation> sensors=   ds
              		.find(TimeLocation.class)
              		.filter(
-             				Filters.gt("timestamp", System.currentTimeMillis()-offTimeLocation)
+             				Filters.gt("timestamp", c.getTime().getTime())
              		)           		
        //                 .filter(
          //    				Filters.eq("property", "p1")

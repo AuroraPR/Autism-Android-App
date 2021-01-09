@@ -34,11 +34,13 @@ public class TasksFragment extends Fragment {
     private Button selectButton;
     private TextView newTaskName;
     private TextView newTaskDate;
+    private String username;
     private SparseBooleanArray mSelectedItemsIds;
 
-    public TasksFragment(TextView newTaskName, TextView newTaskDate) {
+    public TasksFragment(TextView newTaskName, TextView newTaskDate, String username) {
         this.newTaskName = newTaskName;
         this.newTaskDate = newTaskDate;
+        this.username = username;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class TasksFragment extends Fragment {
         c.set(Calendar.MILLISECOND, 0);
 
         Call<Task[]> call=null;
-        call = AsynRestSensorData.init().getTask("aurora", c.getTime().getTime());
+        call = AsynRestSensorData.init().getTask(username, c.getTime().getTime());
         AsynRestSensorData.MyCall<Task[]> tasks=new AsynRestSensorData.MyCall<Task[]>(
                 (e)->{loadListView(view,e);}
         );

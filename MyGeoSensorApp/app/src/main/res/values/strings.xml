@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Autism App</string>
-    <string name="title_activity_cash">CashActivity</string>
+    <string name="app_name">IguDif</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -22,10 +22,13 @@
     <string name="cancel">Cancelar</string>
     <string name="select_date">Selecciona la fecha</string>
 
-    <string name="email">Correo electrónico</string>
+    <string name="username">Nombre de usuario</string>
     <string name="password">Contraseña</string>
-    <string name="name">Nombre</string>
+    <string name="name">Nombre del niñ@</string>
     <string name="emergencyNumber">Número de contacto de emergencia</string>
     <string name="login">Iniciar sesión</string>
     <string name="signin">Registrarse</string>
+
+    <string name="lastTransactions">Últimos movimientos</string>
+    <string name="points">Puntos disponibles</string>
 </resources>
