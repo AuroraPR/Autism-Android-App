@@ -239,7 +239,7 @@ public class MyGeoServlet {
         
         
    static  Datastore getMongoDataStore(String id) throws Exception{
-         Datastore datastore = Morphia.createDatastore(MongoClients.create(),id+"-bbdd");
+         Datastore datastore = Morphia.createDatastore(MongoClients.create(),id+"new");
         datastore.getMapper().mapPackage("apr.server");
         datastore.ensureIndexes();
       
@@ -250,16 +250,16 @@ public class MyGeoServlet {
   
    static public void main(String [] args) throws Exception{
         
-        String user="aurora";
+        String user="aurorapr";
 
          Datastore datastore = getMongoDataStore(user);
        {
-        	 CashMovement data = new CashMovement("aurora",System.currentTimeMillis(), +23.98832f, " saludo ");
+        	 CashMovement data = new CashMovement("aurorapr",System.currentTimeMillis(), +23.98832f, " saludo ");
         	 datastore.save(data);
          }   
        
        {
-        	 ResourceLocation data = new ResourceLocation("casa Rafa", 37.7797222f,-3.7943167f);
+        	 ResourceLocation data = new ResourceLocation("Mi casa", 37.97520615f,-3.78326072f);
         	 datastore.save(data);
          }   
          {
