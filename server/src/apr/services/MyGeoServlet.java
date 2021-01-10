@@ -1,35 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.jmq.sensordata.services;
+package apr.services;
 
-import com.mongodb.client.MongoClients;
 
 import dev.morphia.Datastore;
-import dev.morphia.Morphia;
-import static dev.morphia.aggregation.experimental.expressions.AccumulatorExpressions.*;
-import static dev.morphia.aggregation.experimental.expressions.Expressions.*;
-import dev.morphia.aggregation.experimental.stages.Group;
-
-import dev.morphia.aggregation.experimental.stages.Unset;
-import dev.morphia.aggregation.experimental.stages.Unwind;
 
 import dev.morphia.query.experimental.filters.Filters;
 
-import static dev.morphia.aggregation.Group.*;
-import static dev.morphia.aggregation.experimental.stages.Group.*;
-import dev.morphia.query.experimental.filters.Filter;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import apr.model.CashMovement;
@@ -37,9 +14,7 @@ import apr.model.ResourceLocation;
 import apr.model.Task;
 import apr.model.TimeLocation;
 import apr.model.security.Secured;
-import static org.jmq.sensordata.services.MongoDS.getMongoDataStore;
-
-
+import static apr.services.MongoDS.getMongoDataStore;
 
 @Path("MyGeoServlet")
 public class MyGeoServlet {
@@ -277,7 +252,7 @@ public class MyGeoServlet {
          }   
        
        {
-        	 ResourceLocation data = new ResourceLocation("casa Rafa", 37.7797222f,-3.7943167f);
+        	 ResourceLocation data = new ResourceLocation("casa", 37.7797222f,-3.7943167f);
         	 datastore.save(data);
          }   
          {
@@ -290,7 +265,7 @@ public class MyGeoServlet {
          }
         { 
                 Date date = new Date("December 17, 1995 03:24:00");
-        	Task data = new Task("aurora", "Matarse",date.getTime());
+        	Task data = new Task("aurora", "no lo sé",date.getTime());
         	 datastore.save(data);
          } 
          

@@ -1,13 +1,13 @@
 package apr.model.security;
 
 
-import org.jmq.sensordata.services.UsuarioResource;
+import apr.services.UsuarioResource;
 import apr.model.User;
 import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
-import org.jmq.sensordata.services.MyGeoServlet;
+import apr.services.MyGeoServlet;
 
 
 @ApplicationPath("rest")

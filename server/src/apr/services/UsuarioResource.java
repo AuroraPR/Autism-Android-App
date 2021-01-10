@@ -1,11 +1,10 @@
-package org.jmq.sensordata.services;
+package apr.services;
 
 import dev.morphia.Datastore;
 import dev.morphia.query.experimental.filters.Filters;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.naming.AuthenticationException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -21,9 +20,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import apr.model.Task;
 import apr.model.UserPass;
-import static org.jmq.sensordata.services.MongoDS.getMongoDataStore;
+import static apr.services.MongoDS.getMongoDataStore;
 
 @Path("/usuario")
 public class UsuarioResource {

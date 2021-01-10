@@ -216,12 +216,10 @@ public class MyGeoServlet {
     public Response getTask(
             @PathParam("user") String user,
             @PathParam("currentDay") Long currentDay
-            ) {
-    			
+            ) {	
                 try {
 
                         Datastore ds=getMongoDataStore(user);
-                        
                         List<Task> tasks = getMongoDataStore(user).find(Task.class)
 					.filter(Filters.gte("date", currentDay), Filters.eq("user", user))
 					.iterator().toList();
@@ -250,20 +248,16 @@ public class MyGeoServlet {
   
    static public void main(String [] args) throws Exception{
         
-        String user="aurorapr";
+        String user="aurora1998";
 
          Datastore datastore = getMongoDataStore(user);
-       {
-        	 CashMovement data = new CashMovement("aurorapr",System.currentTimeMillis(), +23.98832f, " saludo ");
-        	 datastore.save(data);
-         }   
+//       {
+//        	 CashMovement data = new CashMovement("aurorapr",System.currentTimeMillis(), +23.98832f, " saludo ");
+//        	 datastore.save(data);
+//         }   
        
-       {
-        	 ResourceLocation data = new ResourceLocation("Mi casa", 37.97520615f,-3.78326072f);
-        	 datastore.save(data);
-         }   
          {
-                ResourceLocation data = new ResourceLocation("adetem", 37.77315f,-3.7875653f);
+                ResourceLocation data = new ResourceLocation("Mi casa", 37.77315f,-3.7875653f);
         	datastore.save(data);
          }
          {
