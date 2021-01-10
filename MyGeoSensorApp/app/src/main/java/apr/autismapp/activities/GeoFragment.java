@@ -20,13 +20,17 @@ import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -52,10 +56,23 @@ public class GeoFragment extends Fragment implements LocationListener {
     TextView tv =null;
     String name = "";
     String username = "";
+    String lastLoc = "";
+    String phoneNo = null;
+    String message = null;
+    boolean smsSent = false;
+
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =151515 ;
 
     public GeoFragment(String name, String username){
         this.name = name;
         this.username = username;
+    }
+
+    public GeoFragment(String name, String username, String phoneNo, String message){
+        this.name = name;
+        this.username = username;
+        this.phoneNo = phoneNo;
+        this.message = message;
     }
 
     @Override
@@ -84,7 +101,7 @@ public class GeoFragment extends Fragment implements LocationListener {
         Call<ResourceLocation[]> call = AsynRestSensorData.init().getResourceLocation(username);
         AsynRestSensorData.MyCall<ResourceLocation[]> mycall=new AsynRestSensorData.MyCall<ResourceLocation[]>(
                 (ResourceLocation [] e)->{
-                    paintSensorProperty(e);
+                    paintLocations(e);
                 }
         );
         mycall.execute(call);
@@ -150,6 +167,7 @@ public class GeoFragment extends Fragment implements LocationListener {
             e.printStackTrace();
         }
     }
+
 
     LocationManager locationManager;
     Location loc;
@@ -219,8 +237,32 @@ public class GeoFragment extends Fragment implements LocationListener {
                     canGetLocation = true;
                     getLocation();
                 }
+
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Toast.makeText(getContext(),
+                            "Permiso a SMS denegado. Esta función no está disponible", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
                 break;
         }
+    }
+
+    private void sendSMS(Location loc){
+        lastLoc="[" + loc.getLatitude() + "," + loc.getLongitude() + "] ";
+        if(phoneNo!=null&&message!=null){
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNo, null, message+lastLoc, null, null);
+                Toast.makeText(getContext(), "SMS enviado", Toast.LENGTH_LONG).show();
+            } catch (Exception e){
+                Toast.makeText(getContext(), "Ha denegado el permiso de envío de SMS", Toast.LENGTH_LONG).show();
+            }
+        }
+        smsSent=true;
     }
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 2;
@@ -239,8 +281,10 @@ public class GeoFragment extends Fragment implements LocationListener {
 
                     if (locationManager != null) {
                         loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (loc != null)
+                        if (loc != null){
+                            sendSMS(loc);
                             updateUI(loc);
+                        }
                     }
                 } else if (isNetwork) {
                     // from Network Provider
@@ -252,8 +296,10 @@ public class GeoFragment extends Fragment implements LocationListener {
 
                     if (locationManager != null) {
                         loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (loc != null)
+                        if (loc != null) {
+                            sendSMS(loc);
                             updateUI(loc);
+                        }
                     }
                 } else {
                     loc.setLatitude(0);
@@ -284,9 +330,9 @@ public class GeoFragment extends Fragment implements LocationListener {
 
 
 
-    public void paintSensorProperty(ResourceLocation [] properties){
-        this.tv.setText("Painted sensors ");
-        for(ResourceLocation sensor:properties){
+    public void paintLocations(ResourceLocation [] locations){
+        this.tv.setText("Painted locations ");
+        for(ResourceLocation sensor:locations){
             GeoPoint startPoint = new GeoPoint(sensor.lat,sensor.lon);
             Marker startMarker = new Marker(map);
             startMarker.setTitle(sensor.name);
@@ -296,8 +342,8 @@ public class GeoFragment extends Fragment implements LocationListener {
         }
 
 
-        if(properties.length>0){
-            zoomToBounds(computeArea(properties));
+        if(locations.length>0){
+            zoomToBounds(computeArea(locations));
         }
     }
 
@@ -380,6 +426,7 @@ public class GeoFragment extends Fragment implements LocationListener {
     Marker currentLocation=null;
     private void updateUI(Location loc) {
         if(this.isVisible()) {
+
             Log.d("MyGeo", "updateUI");
 
 
@@ -431,5 +478,19 @@ public class GeoFragment extends Fragment implements LocationListener {
             map.getOverlays().add(startMarker);
         }
     }
+
+    protected void checkPermissionSMS() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        }
+    }
+
+
 
 }

@@ -33,11 +33,9 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
     BottomNavigationView bn;
     int prevSelected=0;
     private NfcAdapter mNfcAdapter;
-
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
     String phoneNo="";
     String name="";
-    String message = "NECESITO AYUDA. Consulta mi localización desde la app de IguDif";
+    String message = "NECESITO AYUDA. Mi localización es: ";
     String username="";
     private TextView newTaskName;
     private Button newTaskDate;
@@ -85,14 +83,16 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
                     prevSelected=R.id.menu_maps;
                 }
                 if (menuItem.getItemId()==R.id.menu_emergency){
-                    checkPermissionSMS();
-                    try {
-                        SmsManager smsManager = SmsManager.getDefault();
-                        smsManager.sendTextMessage(phoneNo, null, message, null, null);
-                        Toast.makeText(getApplicationContext(), "SMS enviado", Toast.LENGTH_LONG).show();
-                    } catch (Exception e){
-                        Toast.makeText(getApplicationContext(), "Ha denegado el permiso de envío de SMS", Toast.LENGTH_LONG).show();
-                    }
+                    GeoFragment actualFragment=new GeoFragment(name,username,phoneNo,message);
+                    showSelectedFragment((Fragment)actualFragment);
+                    prevSelected=R.id.menu_maps;
+                    //try {
+                        //SmsManager smsManager = SmsManager.getDefault();
+                        //smsManager.sendTextMessage(phoneNo, null, message+actualFragment.loc, null, null);
+                        //Toast.makeText(getApplicationContext(), "SMS enviado", Toast.LENGTH_LONG).show();
+                    //} catch (Exception e){
+                        //Toast.makeText(getApplicationContext(), "Ha denegado el permiso de envío de SMS", Toast.LENGTH_LONG).show();
+                    //}
                 }
 
                 return true;
@@ -145,33 +145,6 @@ public class MainActivity extends AppCompatActivity implements FormDialogListene
         //}
     }
 
-    protected void checkPermissionSMS() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Permiso a SMS denegado. Esta función no está disponible", Toast.LENGTH_LONG).show();
-                    return;
-                }
-            }
-        }
-
-    }
 
     @Override
     public void update(String taskName, String taskDate) {
