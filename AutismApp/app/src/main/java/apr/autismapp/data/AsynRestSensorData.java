@@ -87,7 +87,7 @@ public class AsynRestSensorData {
     }
 
 
-    static public String baseURL="http://192.168.1.23:8092";
+    static public String baseURL="http://192.168.0.23:8092";
     static public String token="wep";
 
     static public ServiceSensorData init(){

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_task"
-        android:title="Tareas"
+        android:title="@string/tasks"
         android:icon="@drawable/ic_task" />
 
     <item android:id="@+id/menu_rewards"
-        android:title="Recompensas"
+        android:title="@string/rewards"
         android:icon="@drawable/ic_rewards" />
 
     <item android:id="@+id/menu_maps"
-        android:title="Mapa"
+        android:title="@string/maps"
         android:icon="@drawable/ic_maps" />
 
     <item android:id="@+id/menu_emergency"
-        android:title="Emergencia"
+        android:title="@string/emergency"
         android:icon="@drawable/ic_emergency" />
 
 

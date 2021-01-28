@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="show">Nº tareas restantes</string>
+    <string name="add_task">Añadir nueva tarea</string>
+
+    <string name="task_name">Nombre de la tarea</string>
+    <string name="mandatory">Este campo es obligatorio</string>
+    <string name="task_date">Fecha</string>
+    <string name="edit">Nueva tarea</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_date">Selecciona la fecha</string>
+
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="name">Nombre del niñ@</string>
+    <string name="emergencyNumber">Número de contacto de emergencia</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="signin">Registrarse</string>
+
+    <string name="lastTransactions">Últimos movimientos</string>
+    <string name="points">Puntos disponibles</string>
+    <string name="tasks">Tareas</string>
+    <string name="rewards">Recompensas</string>
+    <string name="maps">Mapas</string>
+    <string name="emergency">Emergencia</string>
+</resources>

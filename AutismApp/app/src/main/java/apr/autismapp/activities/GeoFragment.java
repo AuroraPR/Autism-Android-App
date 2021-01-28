@@ -258,7 +258,7 @@ public class GeoFragment extends Fragment implements LocationListener {
             try {
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNo, null, message+lastLoc, null, null);
-                Toast.makeText(getContext(), "SMS enviado", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "SMS sent", Toast.LENGTH_LONG).show();
             } catch (Exception e){
                 Toast.makeText(getContext(), "Ha denegado el permiso de envío de SMS", Toast.LENGTH_LONG).show();
             }

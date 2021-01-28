@@ -98,7 +98,7 @@ public class CashFragment extends Fragment {
         float total=0f;
         for(CashMovement cm:e)
             total+=cm.money;
-        tCash.setText(Utils.round(total,2)+" puntos");
+        tCash.setText(Utils.round(total,2)+" points");
 
 
 
